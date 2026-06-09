@@ -61,14 +61,14 @@ class Config
     }
 
     /**
-     * Frontend live-poll interval in seconds (default 60).
+     * Frontend live-poll interval in seconds (default 45).
      *
      * @return int
      */
     public function getPollInterval(): int
     {
         $value = (int) $this->scopeConfig->getValue(self::XML_POLL_INTERVAL);
-        return $value > 0 ? $value : 60;
+        return $value > 0 ? $value : 45;
     }
 
     /**

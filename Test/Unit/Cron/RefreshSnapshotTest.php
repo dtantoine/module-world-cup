@@ -67,4 +67,14 @@ class RefreshSnapshotTest extends TestCase
         $this->logger->expects($this->once())->method('error');
         $this->cron->execute();
     }
+
+    public function testUnexpectedExceptionLogsAndPreservesSnapshot(): void
+    {
+        $this->config->method('isEnabled')->willReturn(true);
+        $this->client->method('getGames')->willReturn([['id' => '1']]);
+        $this->builder->method('build')->willThrowException(new \RuntimeException('bad data'));
+        $this->repo->expects($this->never())->method('save');
+        $this->logger->expects($this->once())->method('error');
+        $this->cron->execute();
+    }
 }

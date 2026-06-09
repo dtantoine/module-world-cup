@@ -43,12 +43,12 @@ class ConfigTest extends TestCase
         $this->assertSame('plain-jwt', $this->config->getToken());
     }
 
-    public function testGetPollIntervalFallsBackToSixtyOnEmpty(): void
+    public function testGetPollIntervalFallsBackToFortyFiveOnEmpty(): void
     {
         $this->scopeConfig->method('getValue')
             ->with('antoine_worldcup/general/poll_interval')
             ->willReturn('');
-        $this->assertSame(60, $this->config->getPollInterval());
+        $this->assertSame(45, $this->config->getPollInterval());
     }
 
     public function testGetTokenReturnsEmptyStringWhenNotConfigured(): void

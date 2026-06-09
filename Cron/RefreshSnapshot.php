@@ -11,7 +11,6 @@ use Antoine\WorldCup\Model\Snapshot\Builder;
 use Antoine\WorldCup\Model\Snapshot\Repository;
 use Antoine\WorldCup\Model\Upstream\Client;
 use Antoine\WorldCup\Model\Upstream\Config;
-use Antoine\WorldCup\Model\Upstream\UpstreamException;
 use Psr\Log\LoggerInterface;
 
 class RefreshSnapshot
@@ -47,7 +46,7 @@ class RefreshSnapshot
         try {
             $games = $this->client->getGames();
             $this->repository->save($this->builder->build($games));
-        } catch (UpstreamException $e) {
+        } catch (\Exception $e) {
             $this->logger->error('World Cup snapshot refresh failed: ' . $e->getMessage());
         }
     }
