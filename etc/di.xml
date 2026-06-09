@@ -25,4 +25,11 @@
             <argument name="logger" xsi:type="object">Antoine\WorldCup\Logger</argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="antoine_worldcup_seed_snapshot" xsi:type="object">Antoine\WorldCup\Console\Command\SeedSnapshotCommand</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
