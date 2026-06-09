@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Antoine World Cup Hub — dedicated cache type holding the live snapshot.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Cache/etc/cache.xsd">
+    <type name="worldcup_snapshot" translate="label,description"
+          instance="Antoine\WorldCup\Model\Cache\Type\Snapshot">
+        <label>World Cup Snapshot</label>
+        <description>Cached FIFA World Cup 2026 live snapshot (scores, standings, bracket).</description>
+    </type>
+</config>
