@@ -32,11 +32,16 @@ class Index implements HttpGetActionInterface
     /**
      * Serve the cached snapshot as JSON; returns {"enabled":false} when disabled.
      *
+     * The response is marked no-store so neither Varnish/FPC nor the browser caches
+     * it — the page HTML is full-page-cached, and the frontend relies on this
+     * endpoint for fresh live data, so it must never be served stale.
+     *
      * @return ResultInterface
      */
     public function execute(): ResultInterface
     {
         $result = $this->jsonFactory->create();
+        $result->setHeader('Cache-Control', 'no-store, max-age=0', true);
         if (!$this->config->isEnabled()) {
             return $result->setData(['enabled' => false]);
         }

@@ -142,7 +142,7 @@
     }
 
     function refresh() {
-        fetch(DATA_URL, { headers: { 'Accept': 'application/json' } })
+        fetch(DATA_URL, { headers: { 'Accept': 'application/json' }, cache: 'no-store' })
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 if (data && data.matches) { state = data; render(); }
@@ -172,6 +172,11 @@
     /* Boot                                                                 */
     /* ------------------------------------------------------------------ */
 
+    // Paint instantly from the inlined snapshot (fast first render, SEO), then
+    // ALWAYS pull fresh data from the JSON endpoint. The page HTML is FPC-cached,
+    // so its inlined snapshot can be stale; this unconditional fetch decouples the
+    // live experience from the page cache and (re)schedules polling from the
+    // freshly-fetched any_live flag.
     render();
-    schedule();
+    refresh();
 }());
