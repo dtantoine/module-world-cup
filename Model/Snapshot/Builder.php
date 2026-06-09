@@ -193,24 +193,93 @@ class Builder
     }
 
     /**
-     * Build group standings from normalized matches (stub — implemented next task).
+     * Build group standings from normalized matches.
      *
      * @param array<int,array<string,mixed>> $matches
      * @return array<string,array<int,array<string,mixed>>>
      */
     private function buildStandings(array $matches): array
     {
-        return []; // implemented in the next task
+        $groups = $this->provider->getGroups();
+        $standings = [];
+
+        foreach ($groups as $letter => $teamIds) {
+            $table = [];
+            foreach ($teamIds as $tid) {
+                $table[(string) $tid] = [
+                    'team'   => $this->team((string) $tid),
+                    'played' => 0,
+                    'win'    => 0,
+                    'draw'   => 0,
+                    'loss'   => 0,
+                    'gf'     => 0,
+                    'ga'     => 0,
+                    'gd'     => 0,
+                    'pts'    => 0,
+                ];
+            }
+            foreach ($matches as $m) {
+                if ($m['type'] !== 'group' || $m['group'] !== $letter || $m['status'] !== 'finished') {
+                    continue;
+                }
+                $h = $m['home']['id'];
+                $a = $m['away']['id'];
+                if (!isset($table[$h], $table[$a])) {
+                    continue;
+                }
+                $hs = (int) $m['home_score'];
+                $as = (int) $m['away_score'];
+                $table[$h]['played']++;
+                $table[$a]['played']++;
+                $table[$h]['gf'] += $hs;
+                $table[$h]['ga'] += $as;
+                $table[$a]['gf'] += $as;
+                $table[$a]['ga'] += $hs;
+                if ($hs > $as) {
+                    $table[$h]['win']++;
+                    $table[$a]['loss']++;
+                } elseif ($hs < $as) {
+                    $table[$a]['win']++;
+                    $table[$h]['loss']++;
+                } else {
+                    $table[$h]['draw']++;
+                    $table[$a]['draw']++;
+                }
+            }
+            foreach ($table as &$row) {
+                $row['pts'] = $row['win'] * 3 + $row['draw'];
+                $row['gd']  = $row['gf'] - $row['ga'];
+            }
+            unset($row);
+            $rows = array_values($table);
+            usort($rows, static function (array $x, array $y): int {
+                return [$y['pts'], $y['gd'], $y['gf'], $x['team']['name']]
+                    <=> [$x['pts'], $x['gd'], $x['gf'], $y['team']['name']];
+            });
+            foreach ($rows as $i => &$row) {
+                $row['rank'] = $i + 1;
+            }
+            unset($row);
+            $standings[(string) $letter] = $rows;
+        }
+
+        return $standings;
     }
 
     /**
-     * Build knockout bracket from normalized matches (stub — implemented next task).
+     * Build knockout bracket from normalized matches, grouped by type.
      *
      * @param array<int,array<string,mixed>> $matches
      * @return array<string,array<int,array<string,mixed>>>
      */
     private function buildBracket(array $matches): array
     {
-        return []; // implemented in the next task
+        $bracket = ['r32' => [], 'r16' => [], 'qf' => [], 'sf' => [], 'third' => [], 'final' => []];
+        foreach ($matches as $m) {
+            if (isset($bracket[$m['type']])) {
+                $bracket[$m['type']][] = $m;
+            }
+        }
+        return $bracket;
     }
 }

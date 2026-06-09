@@ -130,4 +130,48 @@ class BuilderTest extends TestCase
         $this->assertSame('', $m['stadium']['name']);
         $this->assertIsString($m['kickoff_beirut']);
     }
+
+    public function testStandingsAccumulateFromFinishedGroupMatches(): void
+    {
+        $snap = $this->builder->build([
+            ['id' => '1', 'home_score' => '3', 'away_score' => '1', 'finished' => 'TRUE', 'time_elapsed' => 'FT'],
+        ]);
+        $this->assertArrayHasKey('A', $snap['standings']);
+        $rows = $snap['standings']['A'];
+        $this->assertSame('Qatar', $rows[0]['team']['name']);
+        $this->assertSame(3, $rows[0]['pts']);
+        $this->assertSame(2, $rows[0]['gd']);
+        $this->assertSame('Ecuador', $rows[1]['team']['name']);
+        $this->assertSame(0, $rows[1]['pts']);
+    }
+
+    public function testUnplayedGroupHasZeroedRows(): void
+    {
+        $snap = $this->builder->build([]);
+        $rows = $snap['standings']['A'];
+        $this->assertSame(0, $rows[0]['played']);
+        $this->assertSame(0, $rows[0]['pts']);
+    }
+
+    public function testBracketGroupsKnockoutByTypeWithLabels(): void
+    {
+        $provider = $this->createMock(Provider::class);
+        $provider->method('getTeam')->willReturn(null);
+        $provider->method('getStadium')->willReturn(['timezone' => 'America/Los_Angeles']);
+        $provider->method('getGroups')->willReturn([]);
+        $provider->method('getFixtures')->willReturn([
+            [
+                'id' => '73', 'home_team_id' => '0', 'away_team_id' => '0',
+                'home_team_label' => 'Winner Group A', 'away_team_label' => 'Runner-up Group B',
+                'group' => 'R32', 'matchday' => '4',
+                'local_date' => '06/28/2026 16:00', 'stadium_id' => '1', 'type' => 'r32',
+            ],
+        ]);
+        $builder = new Builder($provider);
+
+        $snap = $builder->build([]);
+        $this->assertArrayHasKey('r32', $snap['bracket']);
+        $this->assertArrayHasKey('third', $snap['bracket']);
+        $this->assertSame('Winner Group A', $snap['bracket']['r32'][0]['home_label']);
+    }
 }
