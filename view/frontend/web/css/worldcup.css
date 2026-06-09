@@ -192,6 +192,14 @@
 /* ------------------------------------------------------------------ */
 /* Panels                                                               */
 /* ------------------------------------------------------------------ */
+/* The Antoine/Luma theme sets `display` on block/section elements, which beats
+ * the UA `[hidden] { display: none }` rule, so a non-active panel would stay
+ * visible once it has rendered content. Force the hidden attribute to win.
+ * (vault gotcha: author-display-rule-beats-hidden-attribute, session 054) */
+.wc-hub__panel[hidden] {
+    display: none !important;
+}
+
 .wc-hub__panel h2 {
     font-size: 1rem;
     font-weight: 700;
