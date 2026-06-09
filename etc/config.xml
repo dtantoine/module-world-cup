@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Antoine World Cup Hub — default configuration values
+ * (enable flag, upstream base URL + token, frontend poll interval, cache TTL).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <antoine_worldcup>
+            <general>
+                <enabled>0</enabled>
+                <base_url>https://worldcup26.ir</base_url>
+                <jwt_token/>
+                <poll_interval>45</poll_interval>
+                <cache_ttl>300</cache_ttl>
+            </general>
+        </antoine_worldcup>
+    </default>
+</config>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Antoine World Cup Hub — DI: dedicated Monolog channel writing to
+ * var/log/worldcup.log (bound to consumers in later tasks).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Antoine\WorldCup\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/worldcup.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Antoine\WorldCup\Logger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">worldcup</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Antoine\WorldCup\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>
