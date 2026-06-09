@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Antoine World Cup Hub — layout for /world-cup (worldcup_index_index).
+ * Loads the hub block + CSS; JS is loaded inline at bottom of hub.phtml (defer).
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>FIFA World Cup 2026 — Live Hub</title>
+        <css src="Antoine_WorldCup::css/worldcup.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="worldcup.hub"
+                   template="Antoine_WorldCup::hub.phtml">
+                <arguments>
+                    <argument name="hub_vm" xsi:type="object">Antoine\WorldCup\ViewModel\Hub</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,246 @@
+/* Antoine World Cup Hub — baseline styles (navy/red World Cup aesthetic).
+ * All class names and selectors here are part of the E2E contract — do not rename.
+ * Visual enhancements are welcome; structural class names must stay stable.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Layout shell                                                         */
+/* ------------------------------------------------------------------ */
+.wc-hub {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    font-family: inherit;
+    color: #0b1f3a;
+}
+
+/* ------------------------------------------------------------------ */
+/* Coming-soon variant                                                  */
+/* ------------------------------------------------------------------ */
+.wc-hub--soon {
+    text-align: center;
+    padding: 4rem 1.5rem;
+}
+
+.wc-hub--soon h1 {
+    font-size: 2rem;
+    color: #0b1f3a;
+    margin-bottom: 1rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                               */
+/* ------------------------------------------------------------------ */
+.wc-hub__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid #0b1f3a;
+    margin-bottom: .5rem;
+}
+
+.wc-hub__head h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0b1f3a;
+    margin: 0;
+}
+
+.wc-hub__meta {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.wc-hub__updated {
+    font-size: .8rem;
+    color: #5a6b85;
+}
+
+.wc-hub__refresh {
+    background: none;
+    border: 1px solid #0b1f3a;
+    border-radius: 4px;
+    padding: .35rem .8rem;
+    font: inherit;
+    font-size: .85rem;
+    cursor: pointer;
+    color: #0b1f3a;
+    transition: background .15s, color .15s;
+}
+
+.wc-hub__refresh:hover {
+    background: #0b1f3a;
+    color: #fff;
+}
+
+/* ------------------------------------------------------------------ */
+/* Tab bar                                                              */
+/* ------------------------------------------------------------------ */
+.wc-hub__tabs {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+    border-bottom: 2px solid #0b1f3a;
+}
+
+.wc-hub__tabs button {
+    background: none;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    padding: .6rem 1rem;
+    font: inherit;
+    cursor: pointer;
+    color: #0b1f3a;
+    transition: color .15s;
+}
+
+.wc-hub__tabs button:hover {
+    color: #d3122a;
+}
+
+.wc-hub__tabs button[aria-selected="true"] {
+    border-bottom-color: #d3122a;
+    font-weight: 700;
+    color: #d3122a;
+}
+
+/* ------------------------------------------------------------------ */
+/* Match cards — .wc-match, .wc-match--live (E2E contract)             */
+/* ------------------------------------------------------------------ */
+.wc-match {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: .5rem;
+    padding: .6rem .8rem;
+    border: 1px solid #e3e8ef;
+    border-radius: 8px;
+    margin: .4rem 0;
+    background: #fff;
+    transition: box-shadow .15s;
+}
+
+.wc-match:hover {
+    box-shadow: 0 2px 8px rgba(11,31,58,.1);
+}
+
+.wc-match__score {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.wc-match__away {
+    text-align: right;
+}
+
+.wc-match__meta {
+    grid-column: 1 / -1;
+    font-size: .8rem;
+    color: #5a6b85;
+}
+
+/* Live match: red left border (E2E contract: .wc-match--live) */
+.wc-match--live {
+    border-left: 4px solid #d3122a;
+    background: #fff8f8;
+}
+
+.wc-match--live .wc-match__meta {
+    color: #d3122a;
+    font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ */
+/* Standings table — .wc-standings (E2E contract)                      */
+/* ------------------------------------------------------------------ */
+.wc-standings {
+    width: 100%;
+    border-collapse: collapse;
+    margin: .5rem 0 1.5rem;
+    font-size: .9rem;
+}
+
+.wc-standings th,
+.wc-standings td {
+    padding: .4rem .5rem;
+    text-align: center;
+    border-bottom: 1px solid #eef1f5;
+}
+
+.wc-standings th {
+    font-weight: 700;
+    background: #f5f7fa;
+    color: #0b1f3a;
+}
+
+.wc-standings td:nth-child(2) {
+    text-align: left;
+}
+
+.wc-standings tr:hover td {
+    background: #f0f4f8;
+}
+
+/* ------------------------------------------------------------------ */
+/* Panels                                                               */
+/* ------------------------------------------------------------------ */
+.wc-hub__panel h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0b1f3a;
+    margin: 1.25rem 0 .5rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.wc-empty {
+    color: #5a6b85;
+    font-style: italic;
+    padding: 1rem 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* CTA link                                                             */
+/* ------------------------------------------------------------------ */
+.wc-hub__cta {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: .95rem;
+}
+
+.wc-hub__cta a {
+    color: #d3122a;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.wc-hub__cta a:hover {
+    text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                           */
+/* ------------------------------------------------------------------ */
+@media (max-width: 640px) {
+    .wc-hub__head h1 {
+        font-size: 1.35rem;
+    }
+
+    .wc-match {
+        grid-template-columns: 1fr auto 1fr;
+        font-size: .9rem;
+    }
+
+    .wc-hub__tabs button {
+        padding: .5rem .7rem;
+        font-size: .9rem;
+    }
+}

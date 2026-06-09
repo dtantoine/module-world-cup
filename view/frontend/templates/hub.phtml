@@ -1,0 +1,56 @@
+<?php
+/**
+ * Antoine World Cup Hub — main page template.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Antoine\WorldCup\ViewModel\Hub $vm
+ */
+$vm = $block->getData('hub_vm');
+?>
+<?php if (!$vm->isEnabled()): ?>
+    <div class="wc-hub wc-hub--soon">
+        <h1>FIFA World Cup 2026</h1>
+        <p><?= $escaper->escapeHtml(__('The live hub is coming soon. Check back closer to kickoff.')) ?></p>
+    </div>
+<?php else: $snap = $vm->getSnapshot(); ?>
+    <div class="wc-hub"
+         data-wc-data-url="<?= $escaper->escapeHtmlAttr($vm->getDataUrl()) ?>"
+         data-wc-poll="<?= (int) $vm->getPollIntervalMs() ?>"
+         data-wc-initial='<?= /* @noEscape */ $vm->getSnapshotJson() ?>'>
+        <header class="wc-hub__head">
+            <h1>FIFA World Cup 2026</h1>
+            <div class="wc-hub__meta">
+                <span class="wc-hub__updated" data-wc-updated></span>
+                <button type="button" class="wc-hub__refresh" data-wc-refresh>
+                    <?= $escaper->escapeHtml(__('Refresh')) ?>
+                </button>
+            </div>
+        </header>
+        <nav class="wc-hub__tabs" role="tablist">
+            <button role="tab" aria-selected="true" data-wc-tab="live">
+                <?= $escaper->escapeHtml(__('Live & Scores')) ?>
+            </button>
+            <button role="tab" aria-selected="false" data-wc-tab="fixtures">
+                <?= $escaper->escapeHtml(__('Fixtures')) ?>
+            </button>
+            <button role="tab" aria-selected="false" data-wc-tab="standings">
+                <?= $escaper->escapeHtml(__('Standings')) ?>
+            </button>
+            <button role="tab" aria-selected="false" data-wc-tab="bracket">
+                <?= $escaper->escapeHtml(__('Bracket')) ?>
+            </button>
+        </nav>
+        <section class="wc-hub__panel" data-wc-panel="live"></section>
+        <section class="wc-hub__panel" data-wc-panel="fixtures" hidden></section>
+        <section class="wc-hub__panel" data-wc-panel="standings" hidden></section>
+        <section class="wc-hub__panel" data-wc-panel="bracket" hidden></section>
+        <p class="wc-hub__cta">
+            <a href="/trading-hub">
+                <?= $escaper->escapeHtml(__('Collecting the Panini album? Join the sticker trading hub →')) ?>
+            </a>
+        </p>
+    </div>
+    <script src="<?= $escaper->escapeHtmlAttr($block->getViewFileUrl('Antoine_WorldCup::js/worldcup.js')) ?>"
+            defer></script>
+<?php endif; ?>
