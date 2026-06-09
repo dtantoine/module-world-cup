@@ -20,4 +20,9 @@
             </argument>
         </arguments>
     </virtualType>
+    <type name="Antoine\WorldCup\Cron\RefreshSnapshot">
+        <arguments>
+            <argument name="logger" xsi:type="object">Antoine\WorldCup\Logger</argument>
+        </arguments>
+    </type>
 </config>

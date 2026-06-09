@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Antoine World Cup Hub — cron: refresh the live snapshot every minute.
+ * The job self-gates on the admin enable toggle; the upstream call is cheap and
+ * well within the rate limit.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="antoine_worldcup_refresh_snapshot"
+             instance="Antoine\WorldCup\Cron\RefreshSnapshot"
+             method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+    </group>
+</config>
