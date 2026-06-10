@@ -47,11 +47,26 @@
         return img;
     }
 
+    // A match side = flag + name, mirrored: home is [flag][name], away is [name][flag].
+    function matchSide(side, fallbackLabel, isAway) {
+        var span = el('span', 'wc-match__' + (isAway ? 'away' : 'home'));
+        var fi = flagImg(side);
+        var nameEl = el('span', 'wc-match__name', teamLabel(side, fallbackLabel));
+        if (isAway) {
+            span.appendChild(nameEl);
+            if (fi) { span.appendChild(fi); }
+        } else {
+            if (fi) { span.appendChild(fi); }
+            span.appendChild(nameEl);
+        }
+        return span;
+    }
+
     function matchRow(m) {
         var row = el('div', 'wc-match wc-match--' + m.status);
-        row.appendChild(el('span', 'wc-match__home',  teamLabel(m.home,  m.home_label)));
+        row.appendChild(matchSide(m.home, m.home_label, false));
         row.appendChild(el('span', 'wc-match__score', m.home_score + ' – ' + m.away_score));
-        row.appendChild(el('span', 'wc-match__away',  teamLabel(m.away,  m.away_label)));
+        row.appendChild(matchSide(m.away, m.away_label, true));
         var metaText = m.status === 'live'
             ? ('LIVE ' + (m.time_elapsed || ''))
             : (m.kickoff_beirut || '');

@@ -145,8 +145,29 @@
     text-align: center;
 }
 
+.wc-match__home,
 .wc-match__away {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    min-width: 0;
+}
+
+.wc-match__away {
+    justify-content: flex-end;
     text-align: right;
+}
+
+.wc-match__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* In match rows the flag spacing is the flex gap, not the inline margin used in standings. */
+.wc-match .wc-flag {
+    margin: 0;
+    flex: 0 0 auto;
 }
 
 .wc-match__meta {
