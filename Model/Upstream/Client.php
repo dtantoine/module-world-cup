@@ -1,7 +1,7 @@
 <?php
 /**
- * Antoine World Cup Hub — upstream REST client. Server-side only; injects the
- * JWT from config and never returns it. v1 reads the full games list.
+ * Antoine World Cup Hub — upstream REST client. Server-side only; never
+ * returns the JWT. v1 reads the full games list.
  */
 declare(strict_types=1);
 
@@ -28,23 +28,25 @@ class Client
     /**
      * Fetch the full games list from the upstream API.
      *
-     * Sets a Bearer token header, performs a GET request, and decodes the
-     * JSON array response. The token is never exposed in return values or logs.
+     * The JWT is optional — sent only when configured, in case auth is later
+     * enforced. The token is never exposed in return values or logs.
+     * Accepts both a bare JSON array and the `{"games":[...]}` envelope that
+     * the live worldcup26.ir API currently returns.
      *
      * @return array<int,array<string,mixed>>
-     * @throws UpstreamException When the token is absent, the HTTP status is
-     *                           not 200, or the payload is not a JSON array.
+     * @throws UpstreamException When the HTTP status is not 200 or the payload
+     *                           cannot be decoded into a recognised structure.
      */
     public function getGames(): array
     {
+        // The live upstream currently serves /get/games publicly, so the JWT is
+        // OPTIONAL — send it only when configured (in case auth is later enforced).
+        $this->http->setTimeout(self::TIMEOUT_SECONDS);
         $token = $this->config->getToken();
-        if ($token === '') {
-            throw new UpstreamException(__('World Cup upstream token is not configured.'));
+        if ($token !== '') {
+            $this->http->addHeader('Authorization', 'Bearer ' . $token);
         }
 
-        // Bounds a hung upstream from stalling the cron job indefinitely.
-        $this->http->setTimeout(self::TIMEOUT_SECONDS);
-        $this->http->addHeader('Authorization', 'Bearer ' . $token);
         $this->http->get($this->config->getBaseUrl() . '/get/games');
 
         $status = (int) $this->http->getStatus();
@@ -57,6 +59,14 @@ class Client
             throw new UpstreamException(__('World Cup upstream returned an invalid payload.'));
         }
 
-        return $decoded;
+        // The live API wraps the list as {"games":[...]}; accept that or a bare array.
+        if (isset($decoded['games']) && is_array($decoded['games'])) {
+            return $decoded['games'];
+        }
+        if (array_is_list($decoded)) {
+            return $decoded;
+        }
+
+        throw new UpstreamException(__('World Cup upstream returned an unrecognized payload.'));
     }
 }

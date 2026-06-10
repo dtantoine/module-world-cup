@@ -60,15 +60,27 @@ class ClientTest extends TestCase
         $this->client->getGames();
     }
 
-    public function testGetGamesThrowsWhenTokenMissing(): void
+    public function testGetGamesWorksWithoutToken(): void
     {
         $config = $this->createMock(Config::class);
+        $config->method('getBaseUrl')->willReturn('https://worldcup26.ir');
         $config->method('getToken')->willReturn('');
-        $this->http->expects($this->never())->method('addHeader');
-        $this->http->expects($this->never())->method('get');
         $client = new Client($this->http, $config);
-        $this->expectException(UpstreamException::class);
-        $client->getGames();
+
+        $this->http->expects($this->never())->method('addHeader');
+        $this->http->expects($this->once())->method('get')->with('https://worldcup26.ir/get/games');
+        $this->http->method('getStatus')->willReturn(200);
+        $this->http->method('getBody')->willReturn('[{"id":"1"}]');
+
+        $this->assertSame([['id' => '1']], $client->getGames());
+    }
+
+    public function testGetGamesUnwrapsGamesEnvelope(): void
+    {
+        $this->http->method('getStatus')->willReturn(200);
+        $this->http->method('getBody')->willReturn('{"games":[{"id":"1"},{"id":"2"}]}');
+
+        $this->assertSame([['id' => '1'], ['id' => '2']], $this->client->getGames());
     }
 
     public function testGetGamesThrowsOnNonArrayJson(): void
