@@ -1,0 +1,19 @@
+{
+    "name": "antoine/module-world-cup",
+    "description": "Antoine World Cup Hub — public FIFA World Cup 2026 live-stats page (scores, fixtures, group standings, knockout bracket) backed by a cron-built cache snapshot over the worldcup26.ir feed.",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "version": "1.0.0",
+    "require": {
+        "php": "~8.1.0||~8.2.0||~8.3.0",
+        "magento/framework": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Antoine\\WorldCup\\": ""
+        }
+    }
+}
