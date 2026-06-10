@@ -217,6 +217,20 @@
     background: #f0f4f8;
 }
 
+/* Team flag before the name in the standings */
+.wc-flag {
+    width: 2.2rem;
+    height: auto;
+    margin-right: .7rem;
+    vertical-align: middle;
+    border: 1px solid #e3e8ef;
+    border-radius: 2px;
+}
+
+.wc-team-name {
+    vertical-align: middle;
+}
+
 /* ------------------------------------------------------------------ */
 /* Panels                                                               */
 /* ------------------------------------------------------------------ */

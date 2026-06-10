@@ -38,6 +38,15 @@
         return (side && side.name) ? side.name : (fallbackLabel || 'TBD');
     }
 
+    function flagImg(team) {
+        if (!team || !team.flag) { return null; }
+        var img = el('img', 'wc-flag');
+        img.src = team.flag;          // trusted CDN URL from bundled teams.json; set as attribute (no XSS)
+        img.alt = '';
+        img.loading = 'lazy';
+        return img;
+    }
+
     function matchRow(m) {
         var row = el('div', 'wc-match wc-match--' + m.status);
         row.appendChild(el('span', 'wc-match__home',  teamLabel(m.home,  m.home_label)));
@@ -92,7 +101,13 @@
             table.appendChild(head);
             s[g].forEach(function (r) {
                 var tr = el('tr');
-                [r.rank, r.team.name, r.played, r.win, r.draw, r.loss, r.gd, r.pts]
+                tr.appendChild(el('td', null, String(r.rank)));
+                var teamTd = el('td', 'wc-standings__team');
+                var fi = flagImg(r.team);
+                if (fi) { teamTd.appendChild(fi); }
+                teamTd.appendChild(el('span', 'wc-team-name', (r.team && r.team.name) || ''));
+                tr.appendChild(teamTd);
+                [r.played, r.win, r.draw, r.loss, r.gd, r.pts]
                     .forEach(function (v) { tr.appendChild(el('td', null, String(v))); });
                 table.appendChild(tr);
             });

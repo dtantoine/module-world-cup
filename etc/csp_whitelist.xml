@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Antoine World Cup Hub — CSP whitelist. Team flags are served from flagcdn.com
+ * (the URLs in Model/Data/teams.json); allow them under img-src so they aren't
+ * blocked when the storefront Content-Security-Policy is enforced in production.
+ */
+-->
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="img-src">
+            <values>
+                <value id="flagcdn" type="host">flagcdn.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>
